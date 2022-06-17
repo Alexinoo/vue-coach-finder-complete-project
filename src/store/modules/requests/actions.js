@@ -8,6 +8,6 @@ export default {
             message : payload.message
         }
 
-        context.commit('addRequest' , newRequest )
+        context.commit('addRequests' , newRequest )
     }
 }
