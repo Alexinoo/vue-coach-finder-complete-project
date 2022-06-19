@@ -12,7 +12,6 @@ export default {
             areas : data.areas,
         }
 
-    
       const response =  await  fetch(`https://vue-http-demo-97b72-default-rtdb.firebaseio.com/coaches/${userId}.json`,{
 
                     method : 'PUT',
@@ -32,13 +31,17 @@ export default {
         })
     },
 
-  async  loadCoaches(context){
+  async  loadCoaches(context , payload){
+
+        if(!payload.forceRefresh && !context.getters.shouldUpdate){
+            return;
+        }
+
       const response = await fetch(`https://vue-http-demo-97b72-default-rtdb.firebaseio.com/coaches.json`)
 
       const responseData = await response.json();
 
-      if (!response.ok) {
-         
+      if (!response.ok) {         
           const error = new Error(responseData.message || 'Failed to fetch!')
           throw error
       }
@@ -58,6 +61,8 @@ export default {
       } 
 
       context.commit('setCoaches', coaches)
+
+      context.commit('setFetchTimestamp')
 
     }
 }
